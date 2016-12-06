@@ -25,7 +25,7 @@ test_data_apple:
 	cp -Rv ${apple_dir} ${data_dir}/apple
 
 setup_env:
-	$(source ../ENV/bin/activate)
+	source ../ENV/bin/activate
 
 retrain:
 	$(shell python retrain.py \

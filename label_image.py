@@ -1,5 +1,6 @@
 import sys
 import tensorflow as tf
+import numpy as np
 
 # change this as you see fit
 # arg_image_path = sys.argv[1]
@@ -7,7 +8,7 @@ import tensorflow as tf
 # if arg_image_path:
 #     classify(arg_image_path)
 
-def classify(image_path):
+def classify(name, image_path):
     # Read in the image_data
     image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 
@@ -39,10 +40,13 @@ def classify(image_path):
         for node_id in top_k:
             human_string = label_lines[node_id]
             score = predictions[0][node_id]
-            classify_result.append('%s (score = %.5f)' % (human_string, score))
-            print('%s (score = %.5f)' % (human_string, score))
-
-        print classify_result
+            result = {
+                'name':name,
+                'label':human_string,
+                'score':np.asscalar(score)
+            }
+            classify_result.append(result)
+            print result
         
         return classify_result
 

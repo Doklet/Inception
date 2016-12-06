@@ -29,18 +29,13 @@ def classify_file():
 
 @app.route('/api/classify_upload', methods=['POST'])
 def classify_upload():
-	# try:
-		# We will save the file to disk for possible data collection.
 	imagefile = request.files['file']
 	filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
 	filename = os.path.join(UPLOAD_FOLDER, filename_)
 	imagefile.save(filename)
 	logging.info('Saving to %s.', filename)
-	result = label.classify(filename)
+	result = label.classify(imagefile.filename, filename)
 	return json.dumps( result )
-	# except Exception as err:
-	# 	print err
-	# 	return "Upload classify failed", 404
 
 @app.route('/<path:path>')
 def static_file(path):
