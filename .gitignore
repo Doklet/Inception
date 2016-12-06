@@ -1,0 +1,6 @@
+/data
+/static
+/templates
+
+*.tgz
+*.pyc
