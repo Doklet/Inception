@@ -10,6 +10,7 @@ import os
 import logging
 import datetime
 import werkzeug
+import sys
 
 # See https://github.com/BVLC/caffe/blob/master/examples/web_demo/app.py for more info
 UPLOAD_FOLDER = '/tmp/inception_uploads'
@@ -29,13 +30,24 @@ def classify_file():
 
 @app.route('/api/classify_upload', methods=['POST'])
 def classify_upload():
-	imagefile = request.files['file']
-	filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
-	filename = os.path.join(UPLOAD_FOLDER, filename_)
-	imagefile.save(filename)
-	logging.info('Saving to %s.', filename)
-	result = label.classify(imagefile.filename, filename)
-	return json.dumps( result )
+	try:
+		print 'begin classify'
+		print request.files
+		imagefile = request.files['file']
+		print imagefile
+		filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
+		filename = os.path.join(UPLOAD_FOLDER, filename_)
+		imagefile.save(filename)
+		logging.info('Saving to %s.', filename)
+		result = label.classify(imagefile.filename, filename)
+		return json.dumps( result )
+	except:
+	    print "Unexpected error:", sys.exc_info()[0]
+	    raise
+
+@app.route('/')
+def root():
+    return app.send_static_file("index.html")
 
 @app.route('/<path:path>')
 def static_file(path):

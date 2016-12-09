@@ -8,19 +8,24 @@ import numpy as np
 # if arg_image_path:
 #     classify(arg_image_path)
 
+imported_graf = None
+
 def classify(name, image_path):
     # Read in the image_data
     image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 
-    # Loads label file, strips off carriage return
-    label_lines = [line.rstrip() for line 
-                       in tf.gfile.GFile("data/retrained_labels.txt")]
+    if imported_graf == None:
+        # Loads label file, strips off carriage return
+        label_lines = [line.rstrip() for line 
+                           in tf.gfile.GFile("data/retrained_labels.txt")]
 
-    # Unpersists graph from file
-    with tf.gfile.FastGFile("data/retrained_graph.pb", 'rb') as f:
-        graph_def = tf.GraphDef()
-        graph_def.ParseFromString(f.read())
-        _ = tf.import_graph_def(graph_def, name='')
+        # Unpersists graph from file
+        with tf.gfile.FastGFile("data/retrained_graph.pb", 'rb') as f:
+            print 'Loading graph'
+            graph_def = tf.GraphDef()
+            graph_def.ParseFromString(f.read())
+            global imported_graf
+            imported_graf = tf.import_graph_def(graph_def, name='')
 
     # Disable GPU
     config = tf.ConfigProto(
