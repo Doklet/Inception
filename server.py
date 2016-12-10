@@ -38,7 +38,7 @@ def classify_upload():
 		filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
 		filename = os.path.join(UPLOAD_FOLDER, filename_)
 		imagefile.save(filename)
-		logging.info('Saving to %s.', filename)
+		print 'Saving to ' + filename
 		result = label.classify(imagefile.filename, filename)
 		return json.dumps( result )
 	except:

@@ -8,14 +8,16 @@ import numpy as np
 # if arg_image_path:
 #     classify(arg_image_path)
 
-imported_graf = None
+imported_graf = 0
+label_lines = None
 
 def classify(name, image_path):
     # Read in the image_data
     image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 
-    if imported_graf == None:
+    if imported_graf == 0:
         # Loads label file, strips off carriage return
+        global label_lines
         label_lines = [line.rstrip() for line 
                            in tf.gfile.GFile("data/retrained_labels.txt")]
 
@@ -25,7 +27,8 @@ def classify(name, image_path):
             graph_def = tf.GraphDef()
             graph_def.ParseFromString(f.read())
             global imported_graf
-            imported_graf = tf.import_graph_def(graph_def, name='')
+            imported_graf = 1
+            _ = tf.import_graph_def(graph_def, name='')
 
     # Disable GPU
     config = tf.ConfigProto(
