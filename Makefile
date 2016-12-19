@@ -7,6 +7,17 @@ export CUDA_HOME=/usr/local/cuda
 export PATH=/Developer/NVIDIA/CUDA-8.0/bin:$PATH 
 export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-8.0/lib:$DYLD_LIBRARY_PATH
 
+# Mac OS X, CPU only, Python 2.7:
+# export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.11.0-py2-none-any.whl
+# Mac OS X, GPU enabled, Python 2.7:
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/gpu/tensorflow-0.11.0-py2-none-any.whl
+
+install_tf:
+	pip install --upgrade ${TF_BINARY_URL}
+
+install_requirements:
+	pip install -r requirements.txt
+
 clean:
 	rm -rf data
 
@@ -43,7 +54,6 @@ start:
 	python server.py
 
 stage:
-	echo 'Linking ui $(CURDIR)/../../classify/app'
-
-	ln -s $(CURDIR)/../../classify/app ./static
+	echo 'Linking ui $(CURDIR)/../../classify-ui/app'
+	ln -s $(CURDIR)/../../classify-ui/app ./static
 

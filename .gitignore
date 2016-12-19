@@ -1,6 +1,7 @@
 /data
 /static
 /templates
+.env
 
 *.tgz
 *.pyc
