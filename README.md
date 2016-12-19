@@ -5,14 +5,14 @@ then only retrain the last layer of the classification model.
 
 ## Installation
 
-Make sure to create a virtualenv by executing 'virtualenv .env'
-The activate the virtualenv by executing 'source .env/bin/activate'
+Make sure to create a virtualenv by executing `nvirtualenv .env`
+The activate the virtualenv by executing `source .env/bin/activate`
 
 ### Tensorflow
-Start by installing tensorflow by executing 'make install_tf'
+Start by installing tensorflow by executing `make install_tf`
 
 ### pip requirements
-Then install the rest of the requirements by executing 'pip install -r requirements.txt'
+Then install the rest of the requirements by executing `pip install -r requirements.txt`
 
 ## Stage the UI
-Stage the classify ui by executing 'make stage'
+Stage the classify ui by executing `make stage`
