@@ -1,6 +1,7 @@
 /data
 /static
 /templates
+.classify-service-env
 .env
 
 *.tgz
