@@ -8,9 +8,9 @@ export PATH=/Developer/NVIDIA/CUDA-8.0/bin:$PATH
 export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-8.0/lib:$DYLD_LIBRARY_PATH
 
 # Mac OS X, CPU only, Python 2.7:
-# export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.11.0-py2-none-any.whl
+# export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/cpu/tensorflow-0.10.0-py2-none-any.whl
 # Mac OS X, GPU enabled, Python 2.7:
-export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/gpu/tensorflow-0.11.0-py2-none-any.whl
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/mac/gpu/tensorflow-0.10.0-py2-none-any.whl
 
 install_tf:
 	pip install --upgrade ${TF_BINARY_URL}
@@ -39,13 +39,13 @@ setup_env:
 	source ../ENV/bin/activate
 
 retrain:
-	$(shell python retrain.py \
+	echo python retrain.py \
 	--bottleneck_dir=${data_dir}/bottlenecks \
 	--how_many_training_steps 500 \
 	--model_dir=${data_dir}/inception \
 	--output_graph=${data_dir}/retrained_graph.pb \
 	--output_labels=${data_dir}/retrained_labels.txt \
-	--image_dir=${data_dir}/apple)
+	--image_dir=${data_dir}/apple
 
 inference:
 	python label_image.py ${data_dir}/apple/unseen/good_thumb_IMG_0618_1024.jpg
