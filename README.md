@@ -5,7 +5,7 @@ then only retrain the last layer of the classification model.
 
 ## Installation
 
-Make sure to create a virtualenv by executing `nvirtualenv .env`
+Make sure to create a virtualenv by executing `nvirtualenv .classify-service-env`
 The activate the virtualenv by executing `source .env/bin/activate`
 
 ### Tensorflow

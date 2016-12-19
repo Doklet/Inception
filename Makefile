@@ -54,6 +54,7 @@ start:
 	python server.py
 
 stage:
-	echo 'Linking ui $(CURDIR)/../../classify-ui/app'
-	ln -s $(CURDIR)/../../classify-ui/app ./static
+	-rm ./static
+	echo 'Linking ui $(CURDIR)/../classify-ui/app'
+	ln -s $(CURDIR)/../classify-ui/app ./static
 
