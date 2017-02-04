@@ -5,6 +5,7 @@ from flask import request
 from flask import render_template
 
 import label_image as label
+import resnet50
 import json
 import os
 import logging
@@ -21,6 +22,10 @@ app = Flask(__name__)
 # @app.route('/')
 # def root():
 # 	return render_template('index.html')
+
+@app.route('/api/ping')
+def ping():
+	return 'pong'
 
 @app.route('/api/classify_file')
 def classify_file():
@@ -40,6 +45,23 @@ def classify_upload():
 		imagefile.save(filename)
 		print 'Saving to ' + filename
 		result = label.classify(imagefile.filename, filename)
+		return json.dumps( result )
+	except:
+	    print "Unexpected error:", sys.exc_info()[0]
+	    raise
+
+@app.route('/api/classify_upload/resnet50', methods=['POST'])
+def classify_upload_resnet50():
+	try:
+		print 'begin classify'
+		print request.files
+		imagefile = request.files['file']
+		print imagefile
+		filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
+		filename = os.path.join(UPLOAD_FOLDER, filename_)
+		imagefile.save(filename)
+		print 'Saving to ' + filename
+		result = resnet50.classify(imagefile.filename, filename)
 		return json.dumps( result )
 	except:
 	    print "Unexpected error:", sys.exc_info()[0]
