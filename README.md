@@ -16,3 +16,13 @@ Then install the rest of the requirements by executing `pip install -r requireme
 
 ## Stage the UI
 Stage the classify ui by executing `make stage`
+
+### Keras models
+Create a model dir for keras pretrained
+mkdir models
+cd models
+echo '' >> __init__.py
+mkdir keras
+cd keras
+echo '' >> __init__.py
+git clone https://github.com/fchollet/deep-learning-models
