@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 from flask import Flask
+from flask import abort
 from flask import request
 from flask import render_template
 
-import label_image as label
-import resnet50
+import inference_inception3 as inception3
+import inference_resnet50 as resnet50
 import json
 import os
 import logging
@@ -29,22 +30,33 @@ def ping():
 
 @app.route('/api/classify_file')
 def classify_file():
+	model = request.args.get('model')
 	path = request.args.get('path')
-	result = label.classify(path)
+	if path == None:
+		return abort(400, {'message': 'Missing argument: path'})
+	result = inception3.classify(model, path)
 	return json.dumps( result )
 
 @app.route('/api/classify_upload', methods=['POST'])
 def classify_upload():
 	try:
 		print 'begin classify'
-		print request.files
+		# Validate input
+		model = request.args.get('model')
 		imagefile = request.files['file']
-		print imagefile
+		if imagefile == None:
+			return abort(400, {'message': 'Missing files: file'})
+		# Create a unique filename and save it
 		filename_ = str(datetime.datetime.now()).replace(' ', '_') + werkzeug.secure_filename(imagefile.filename)
 		filename = os.path.join(UPLOAD_FOLDER, filename_)
 		imagefile.save(filename)
 		print 'Saving to ' + filename
-		result = label.classify(imagefile.filename, filename)
+		print model
+		# Classify the image
+		if model == None or model == '' or model == 'imagenet':
+			result = resnet50.classify(model, filename)
+		else:
+			result = inception3.classify(model, filename)
 		return json.dumps( result )
 	except:
 	    print "Unexpected error:", sys.exc_info()[0]

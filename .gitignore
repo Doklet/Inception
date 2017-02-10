@@ -1,6 +1,8 @@
 /data
+/models
 /static
 /templates
+/inference
 .classify-service-env
 .env
 *.tgz

@@ -1,0 +1,35 @@
+from models.keras.resnet50 import ResNet50
+from keras.preprocessing import image
+from models.keras.imagenet_utils import preprocess_input, decode_predictions
+import numpy as np
+import model_cache as cache
+
+def classify(name, img_path):
+  model = cache.get('__ResNet50__')
+  if model == None:
+    model = ResNet50(weights='imagenet')
+
+  img = image.load_img(img_path, target_size=(224, 224))
+  x = image.img_to_array(img)
+  x = np.expand_dims(x, axis=0)
+  x = preprocess_input(x)
+
+  preds = model.predict(x)
+  predictions = decode_predictions(preds)
+  classify_result = []
+  for p in predictions[0]:
+    result = {
+          'name':name,
+          'label':p[1],
+          'score':np.asscalar(p[2])
+          }
+    classify_result.append(result)
+
+  return classify_result
+
+
+if __name__ == "__main__":
+  img_path = './data/apple/bad/thumb_IMG_0557_1024.jpg'
+  name = 'bad_apple'
+  result = classify(name, img_path)
+  print result
