@@ -14,7 +14,7 @@ def classify(model_name, image_path):
 
     # Disable GPU
     config = tf.ConfigProto(
-            device_count = {'GPU': 1}
+            device_count = {'GPU': 0}
     )
     with tf.Session(config=config) as sess:
         # Load and import the graph within the session 

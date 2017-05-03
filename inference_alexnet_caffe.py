@@ -10,7 +10,18 @@ def classify(name, img_path):
   classifier = load_classifier(name)
   scores = classifier.predict([image], oversample=True).flatten()
   print img_path
-  return zip(labels, scores)
+  classify_result = []
+  for (label, score) in zip(labels, scores):
+    result = {
+      'label':label,
+      'score':np.asscalar(score)
+    }
+    classify_result.append(result)
+  return {
+    'model':name,
+    'labels':classify_result
+    }
+
 
 def load_classifier(name):
   model_def_file = "inference/" + name + "/deploy.prototxt"
@@ -19,7 +30,7 @@ def load_classifier(name):
   image_dim = 256
   raw_scale = 255
   return caffe.Classifier(
-            model_def_file, pretrained_model_file,
+            str(model_def_file), str(pretrained_model_file),
             image_dims=(image_dim, image_dim), raw_scale=raw_scale,
             mean=mean.mean(1).mean(1), channel_swap=(2, 1, 0)
         )

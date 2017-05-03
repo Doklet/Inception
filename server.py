@@ -7,6 +7,7 @@ from flask import render_template
 
 import inference_inception3 as inception3
 import inference_resnet50 as resnet50
+import inference_alexnet_caffe as alexnet
 import json
 import os
 import logging
@@ -56,10 +57,12 @@ def classify_upload():
 		result = []
 		if model == None or model == '':
 			result.append(resnet50.classify('imagenet', filename))
-			result.append(inception3.classify('apple', filename))
+			result.append(alexnet.classify('apple', filename))
 			result.append(inception3.classify('flower', filename))
 		elif model == 'imagenet':
 			result.append(resnet50.classify(model, filename))
+		elif model == 'apple':
+			result.append(alexnet.classify(model, filename))
 		else:
 			result.append(inception3.classify(model, filename))
 		return json.dumps( result )
