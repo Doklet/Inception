@@ -53,10 +53,15 @@ def classify_upload():
 		print 'Saving to ' + filename
 		print model
 		# Classify the image
-		if model == None or model == '' or model == 'imagenet':
-			result = resnet50.classify(model, filename)
+		result = []
+		if model == None or model == '':
+			result.append(resnet50.classify('imagenet', filename))
+			result.append(inception3.classify('apple', filename))
+			result.append(inception3.classify('flower', filename))
+		elif model == 'imagenet':
+			result.append(resnet50.classify(model, filename))
 		else:
-			result = inception3.classify(model, filename)
+			result.append(inception3.classify(model, filename))
 		return json.dumps( result )
 	except:
 	    print "Unexpected error:", sys.exc_info()[0]

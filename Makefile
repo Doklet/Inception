@@ -45,7 +45,7 @@ retrain:
 	--model_dir=${data_dir}/inception \
 	--output_graph=${data_dir}/retrained_graph.pb \
 	--output_labels=${data_dir}/retrained_labels.txt \
-	--image_dir=${data_dir}/apple
+	--image_dir=${data_dir}/home
 
 inference:
 	python label_image.py ${data_dir}/apple/unseen/good_thumb_IMG_0618_1024.jpg

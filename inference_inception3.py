@@ -14,7 +14,7 @@ def classify(model_name, image_path):
 
     # Disable GPU
     config = tf.ConfigProto(
-            device_count = {'GPU': 0}
+            device_count = {'GPU': 1}
     )
     with tf.Session(config=config) as sess:
         # Load and import the graph within the session 
@@ -34,14 +34,16 @@ def classify(model_name, image_path):
             human_string = label_lines[node_id]
             score = predictions[0][node_id]
             result = {
-                'name':model_name,
                 'label':human_string,
                 'score':np.asscalar(score)
             }
             classify_result.append(result)
             print result
         
-        return classify_result
+        return {
+            'model':model_name,
+            'labels':classify_result
+            }
 
 def reset_graph():
     tf.reset_default_graph()
