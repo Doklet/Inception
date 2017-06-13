@@ -26,3 +26,7 @@ mkdir keras
 cd keras
 echo '' >> __init__.py
 git clone https://github.com/fchollet/deep-learning-models
+
+## HEADS UP
+Right know we need to load up the openai env
+source ../openai/ENV/bin/activate

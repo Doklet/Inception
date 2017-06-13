@@ -47,8 +47,8 @@ retrain:
 	--output_labels=${data_dir}/retrained_labels.txt \
 	--image_dir=${data_dir}/home
 
-inference:
-	python label_image.py ${data_dir}/apple/unseen/good_thumb_IMG_0618_1024.jpg
+inference_test:
+	$(shell curl localhost:5000/api/classify_file?model=home\&path='${data_dir}/home/sleeping/IMG_0777.JPG')
 
 start:
 	python server.py

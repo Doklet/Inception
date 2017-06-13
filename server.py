@@ -32,10 +32,21 @@ def ping():
 @app.route('/api/classify_file')
 def classify_file():
 	model = request.args.get('model')
-	path = request.args.get('path')
-	if path == None:
+	filename = request.args.get('path')
+	if filename == None:
 		return abort(400, {'message': 'Missing argument: path'})
-	result = inception3.classify(model, path)
+	# Classify the image
+	result = []
+	if model == None or model == '':
+		result.append(resnet50.classify('imagenet', filename))
+		result.append(alexnet.classify('apple', filename))
+		result.append(inception3.classify('flower', filename))
+	elif model == 'imagenet':
+		result.append(resnet50.classify(model, filename))
+	elif model == 'apple':
+		result.append(alexnet.classify(model, filename))
+	else:
+		result.append(inception3.classify(model, filename))
 	return json.dumps( result )
 
 @app.route('/api/classify_upload', methods=['POST'])
@@ -106,4 +117,4 @@ if __name__ == "__main__":
 	if not os.path.exists(UPLOAD_FOLDER):
 		os.makedirs(UPLOAD_FOLDER)
 
-	app.run(debug=True, host='0.0.0.0')
+	app.run(debug=True, host='0.0.0.0', threaded=False)
